@@ -87,6 +87,9 @@ def initial_board():
     pieces.append(Piece(label_to_find, occupied_sauares))
   return Board(pieces, squares)
 
+def solved(board):
+  return board._squares[17] == 0 and board._squares[18] == 0
+
 def _index_to_tuple(index):
   r = index / width
   c = index % width

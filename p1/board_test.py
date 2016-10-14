@@ -11,6 +11,15 @@ class GlobalsTestCase(unittest.TestCase):
     self.assertEqual(board._tuple_to_index((0, 1)), 1)
     self.assertEqual(board._tuple_to_index((1, 1)), 5)
 
+  def test_solved(self):
+    not_solved = board.Board([], [1] * 20)
+    solved = board.Board([], [1, 1, 1, 1,
+                              1, 1, 1, 1,
+                              1, 1, 1, 1,
+                              1, 0, 0, 1,
+                              1, 0, 0, 1])
+    self.assertFalse(board.solved(not_solved))
+    self.assertTrue(board.solved(solved))
 
 class PieceTestCase(unittest.TestCase):
   def setUp(self):
