@@ -57,7 +57,7 @@ class BoardTestCase(unittest.TestCase):
                                              1, 1, 1,  1])
 
   def test_hash_key(self):
-    self.assertEqual(self.board.hash_key(), [' ', 'S', 'S', ' ', 't', 't', 't', 't'])
+    self.assertEqual(self.board.hash_key(), ' SS tttt')
 
   def test_make_move(self):
     new_piece = board.Piece(0, [2, 3])

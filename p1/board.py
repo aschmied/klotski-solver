@@ -47,7 +47,8 @@ class Board:
 
   def hash_key(self):
     value_map = { -1: ' ', 0: 'S', 1: 't', 2: 't', 3: 's', 4: 's', 5: 't', 6: 's', 7: 's', 8: 't', 9: 'w'}
-    return [value_map[s] for s in self._squares]
+    chars = [value_map[s] for s in self._squares]
+    return ''.join(chars)
 
   def make_move(self, src_piece, dst_piece):
     assert src_piece.label() == dst_piece.label()
