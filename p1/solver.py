@@ -13,13 +13,13 @@ class Solver:
 
   def solve(self):
     while True:
-      board = self._p.get()
-      next_boards = board.next_boards()
+      current_board = self._q.get()
+      next_boards = current_board.next_boards()
       for next_board in next_boards:
-        if next_board.hash_key() in self._visited:
+        if next_board.hash_key() in self._enqueued:
           next
-        next_board.previous_board = board
-        if next_board.solved(next_board):
+        next_board.previous_board = current_board
+        if board.solved(next_board):
           return next_board
         self._q.put(next_board)
         self._enqueued.add(next_board.hash_key())
