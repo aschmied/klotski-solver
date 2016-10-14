@@ -1,41 +1,78 @@
+width = 4
+height = 5
+
 class Piece:
-  def __init__(self, occupied_indexes):
-    self._occupied_indexes = occupied_indexes
+  def __init__(self, label, occupied_squares):
+    self._label = label
+    self._occupied_squares = occupied_squares
 
-  def next_pieces(self, occupied):
-    pass
+  def label(self):
+    return self._label
 
+  def next_pieces(self, squares):
+    offsets = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+    return [ self._shift(offset)
+             for offset in offsets
+             if self._legal_shift(squares, offset) ]
+
+  def _legal_shift(self, squares, offset):
+    for occupied_square in self._occupied_squares:
+      r, c = _index_to_tuple(occupied_square)
+      sr = r + offset[0]
+      sc = c + offset[1]
+
+      if sr < 0 or sr >= height:
+        return False
+      if sc < 0 or sc >= width:
+        return False
+
+      if not squares[_tuple_to_index((sr, sc))] in [-1, self.label()]:
+        return False
+
+    return True
+
+  def _shift(self, offset):
+    new_occupied_squares = [ self._shift_square(square, offset)
+                             for square in self._occupied_squares ]
+    return Piece(self._label, new_occupied_squares)
+
+  def _shift_square(self, square, offset):
+    r, c = _index_to_tuple(square)
+    return _tuple_to_index((r + offset[0], c + offset[1]))
 
 class Board:
-  def __init__(self, pieces, occupied):
+  def __init__(self, pieces, squares):
     self._pieces = pieces
-    self._occupied = occupied
+    self._squares = squares
 
   def make_move(self, src_piece, dst_piece):
-    next_pieces = list(self._pieces)
-    next_occupied = list(self._occupied)
+    assert src_piece.label() == dst_piece.label()
+    label = src_piece.label()
 
-    src_piece_index = next_occupied[src_piece.occupied_indexes[0]]
-    next_pieces[src_piece_index] = dst_piece
+    new_pieces = list(self._pieces)
+    new_squares = list(self._squares)
 
-    for vacated_index in src_piece.occupied_indexes:
-      next_occupied[vacated_index] = -1
+    new_pieces[label] = dst_piece
 
-    for occupied_index in dst_piece.occupied_indexes:
-      next_occupied[occupied_index] = src_piece_index
+    for vacated_square in src_piece._occupied_squares:
+      new_squares[vacated_square] = -1
 
-    return Board(next_pieces, next_occupied)
+    for occupied_square in dst_piece._occupied_squares:
+      new_squares[occupied_square] = label
+
+    return Board(new_pieces, new_squares)
 
   def next_boards(self):
     next_boards = []
     for piece in self._pieces:
-      next_pieces = piece.next_pieces(occupied)
+      next_pieces = piece.next_pieces(self._squares)
       for next_piece in next_pieces:
         next_boards.append(self.make_move(piece, next_piece))
+    return next_boards
 
 
 def initial_board():
-  occupied = [
+  squares = [
     -1,  0,  0, -1,
      1,  0,  0,  2,
      1,  3,  4,  2,
@@ -43,6 +80,17 @@ def initial_board():
      5,  9,  9,  8
   ]
   pieces = []
-  for i in range(10): 
-    pieces.append(Piece([occupied_index for ((occupied_index, piece_index)) in enumerate(occupied) if piece_index == i]))
-  return Board(pieces, occupied)
+  for label_to_find in range(10):
+    occupied_sauares = [ occupied_square
+                         for (occupied_square, label) in enumerate(squares)
+                         if label == label_to_find ]
+    pieces.append(Piece(label_to_find, occupied_sauares))
+  return Board(pieces, squares)
+
+def _index_to_tuple(index):
+  r = index / width
+  c = index % width
+  return (r, c)
+
+def _tuple_to_index(tuple):
+  return width * tuple[0] + tuple[1]
