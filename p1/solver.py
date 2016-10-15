@@ -8,6 +8,7 @@ class Solver:
     self._enqueued = set()
     
     initial_board = board.initial_board()
+    initial_board.previous_board = None
     self._q.put(initial_board)
     self._enqueued.add(initial_board.hash_key())
 
@@ -20,6 +21,15 @@ class Solver:
           continue
         next_board.previous_board = current_board
         if board.solved(next_board):
-          return next_board
+          return _solution_to_list(next_board)
         self._q.put(next_board)
         self._enqueued.add(next_board.hash_key())
+
+
+def _solution_to_list(solution):
+  l = []
+  while solution is not None:
+    l.append(solution)
+    solution = solution.previous_board
+  l.reverse()
+  return l
