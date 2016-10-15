@@ -1,9 +1,9 @@
 import time
 
-import p1.solver
+import klotski.solver
 
 t0 = time.time()
-solver = p1.solver.Solver()
+solver = klotski.solver.Solver()
 solutions, stats = solver.solve()
 t1 = time.time()
 
