@@ -25,15 +25,16 @@ class Solver:
           solutions.append(_solution_to_list(next_board))
         self._q.put(next_board)
         self._enqueued.add(next_board.hash_key())
-    return solutions, _analyze_solutions(solutions)
+    return solutions, _analyze_solutions(solutions, self._enqueued)
 
 
-def _analyze_solutions(solutions):
+def _analyze_solutions(solutions, examined_configurations):
   return {
     'number_of_solutions': len(solutions),
     'length_of_shortest_solution': min(map(len, solutions)),
     'length_of_longest_solution': max(map(len, solutions)),
     'number_of_unique_end_states': len(set([s[-1].hash_key() for s in solutions])),
+    'number_of_board_states': len(examined_configurations),
   }
 
 def _solution_to_list(solution):
