@@ -21,6 +21,10 @@ class GlobalsTestCase(unittest.TestCase):
     self.assertFalse(board.solved(not_solved))
     self.assertTrue(board.solved(solved))
 
+  def test_str(self):
+    b = board.Board([], [-1, 0, 0, 1, 2, 2, 3, 3])
+    self.assertEqual(b.__str__(), ' 001\n2233')
+
 class PieceTestCase(unittest.TestCase):
   def setUp(self):
     self.squares = [ -1, 0, 0, 1,
