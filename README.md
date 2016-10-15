@@ -22,7 +22,7 @@ When I was about 10 years old my grandmother gave me the [Klotski](https://en.wi
 
 ## Analysis
 
-Before writing a program to solve the puzzle I convinced myself that it was feasible. The number of possible configurations of pieces on the board provides an upper bound on the number of states that the program must examine. Since there are 10 pieces I estimated the number of board configurations as `10! ~ 3.6 million`. This is a coarse estimate. Some unique board configurations are uncounted because sliding a piece left or right can produce a new board configuration while retaining the same ordering. On the other hand there are four identical small squares and four identical tall rectangles, so we can remove two factors of `4!`.
+Before writing a program to solve the puzzle I convinced myself that it was feasible. The number of possible configurations of pieces on the board provides an upper bound on the number of states that the program must examine. Since there are 10 pieces, so I estimated the number of board configurations as 10! ~ 3.6 million. This is a coarse estimate. Some unique board configurations are uncounted because sliding a piece left or right can produce a new board configuration while retaining the same ordering. On the other hand there are four identical small squares and four identical tall rectangles, so we can remove two factors of 4!.
 
 At this point I was sufficiently convinced. Box.
 
@@ -32,15 +32,15 @@ Assuming my estimate of 3 million board configurations is accurate then it is fe
 
 This program uses a breadth first search to traverse the graph. It does not explicitly construct the graph. Instead it begins by constructing a representation of the initial board configuration. It then determines the board configurations reachable in one move from the first configuration and adds them to a queue for subsequent processing. It then pops the next configuration from the front of the queue, finds the next reachable configurations, enqueues them, and repeats.
 
-Additionally the program keeps track of all previously enqueued configurations to ensure that each configuration is examined exactly once. Finally, before being enqueued each configuration is examined to determine whether it is a solved configuration.
+The program keeps track of all previously enqueued configurations to ensure that each configuration is examined exactly once. Finally, before being enqueued each configuration is examined to determine whether it is a solved configuration.
 
 ## Complexity
 
-The queue is a Python `collections.deque`. Its `append` and `pop` are O(1). The list of visited configurations is kept in a `set`. The `add` and `in` operations on a `set` have average O(1) and worst case O(N). Breadth first search has complexity O(V+E). Membership in the set of visited configurations is checked for each edge in E and the number of elements in the set is bounded by the number of board configurations |V|. Therefore the program has average complexity O(V+E) and worst case complexity of O((V+E) * V) where V is the number of board configurations and E is the number of transitions between them.
+The queue is a Python `collections.deque`. Its `append` and `pop` are O(1). The visited configurations are stored in a `set`. The `add` and `in` operations on a `set` have average complexity O(1) and worst case O(N). Breadth first search has complexity O(V+E) where V is the number of board configurations and E is the number of transitions between them. Membership in the set of visited configurations is checked for each transition and the number of elements in the set of visited configurations is bounded by the number of board configurations V. Therefore the program has average complexity O(V+E) and worst case complexity O((V+E) * V).
 
 ## Results
 
-The shortest solution this program finds is 85 moves. The [Wikipedia](https://en.wikipedia.org/wiki/Klotski) article reports a solution of 81 moves, but they count moving a piece by two squares in the same direction as a single move whereas this program counts it as two. Also the starting configurations differ between Pioneer 1 and the variant described in the Wikipedia article.
+The shortest solution this program finds is 85 moves. The [Wikipedia](https://en.wikipedia.org/wiki/Klotski) article reports a solution of 81 moves, but they count moving a piece by two squares in the same direction as a single move whereas this program counts it as two. Also the starting configurations differ between the Klotski variant this program solves (Pioneer 1) and the variant described in the Wikipedia article.
 
 The program examines 25,955 unique board configurations. This is fewer than the 3.6 million configuration estimate and greater than the 3.6 million / 4! / 4! = 6250 estimate. Seems reasonable enough.
 
