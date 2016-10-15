@@ -14,7 +14,3 @@ print '  {} unique solutions'.format(stats['number_of_solutions'])
 print '  {} moves in shortest solution'.format(stats['length_of_shortest_solution'])
 print '  {} moves in longest solution'.format(stats['length_of_longest_solution'])
 print '  {} unique end states'.format(stats['number_of_unique_end_states'])
-
-# for board in solution:
-#   print(board)
-#   print
