@@ -1,21 +1,21 @@
-import Queue
+import collections
 
 import board
 
 class Solver:
   def __init__(self):
-    self._q = Queue.Queue()
+    self._q = collections.deque()
     self._enqueued = set()
     
     initial_board = board.initial_board()
     initial_board.previous_board = None
-    self._q.put(initial_board)
+    self._q.append(initial_board)
     self._enqueued.add(initial_board.hash_key())
 
   def solve(self):
     solutions = []
-    while not self._q.empty():
-      current_board = self._q.get()
+    while len(self._q) > 0:
+      current_board = self._q.popleft()
       next_boards = current_board.next_boards()
       for next_board in next_boards:
         if next_board.hash_key() in self._enqueued:
@@ -23,7 +23,7 @@ class Solver:
         next_board.previous_board = current_board
         if board.solved(next_board):
           solutions.append(_solution_to_list(next_board))
-        self._q.put(next_board)
+        self._q.append(next_board)
         self._enqueued.add(next_board.hash_key())
     return solutions, _analyze_solutions(solutions, self._enqueued)
 
