@@ -4,10 +4,8 @@ import p1.solver
 
 t0 = time.time()
 solver = p1.solver.Solver()
-solutions = solver.solve()
+solutions, stats = solver.solve()
 t1 = time.time()
-
-stats = p1.solver.analyze_solutions(solutions)
 
 print 'Finished in {} seconds'.format(t1 - t0)
 print '  {} unique solutions'.format(stats['number_of_solutions'])
