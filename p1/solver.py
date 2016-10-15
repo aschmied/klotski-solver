@@ -13,7 +13,8 @@ class Solver:
     self._enqueued.add(initial_board.hash_key())
 
   def solve(self):
-    while True:
+    solutions = []
+    while not self._q.empty():
       current_board = self._q.get()
       next_boards = current_board.next_boards()
       for next_board in next_boards:
@@ -21,10 +22,19 @@ class Solver:
           continue
         next_board.previous_board = current_board
         if board.solved(next_board):
-          return _solution_to_list(next_board)
+          solutions.append(_solution_to_list(next_board))
         self._q.put(next_board)
         self._enqueued.add(next_board.hash_key())
+    return solutions
 
+
+def analyze_solutions(solutions):
+  return {
+    'number_of_solutions': len(solutions),
+    'length_of_shortest_solution': min(map(len, solutions)),
+    'length_of_longest_solution': max(map(len, solutions)),
+    'number_of_unique_end_states': len(set([s[-1].hash_key() for s in solutions])),
+  }
 
 def _solution_to_list(solution):
   l = []
