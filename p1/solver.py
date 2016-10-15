@@ -20,6 +20,6 @@ class Solver:
           continue
         next_board.previous_board = current_board
         if board.solved(next_board):
-          return next_board, None
+          return next_board
         self._q.put(next_board)
         self._enqueued.add(next_board.hash_key())
