@@ -24,7 +24,7 @@ When I was about 10 years old my grandmother gave me the [Klotski](https://en.wi
 
 Before writing a program to solve the puzzle I convinced myself that it was feasible. The number of possible configurations of pieces on the board provides an upper bound on the number of states that the program must examine. Since there are 10 pieces, so I estimated the number of board configurations as 10! ~ 3.6 million. This is a coarse estimate. Some unique board configurations are uncounted because sliding a piece left or right can produce a new board configuration while retaining the same ordering. On the other hand there are four identical small squares and four identical tall rectangles, so we can remove two factors of 4!.
 
-At this point I was sufficiently convinced. Box.
+At this point I was sufficiently convinced.
 
 ## Solution Design
 
@@ -40,9 +40,9 @@ The queue is a Python `collections.deque`. Its `append` and `pop` are O(1). The 
 
 ## Results
 
-The shortest solution this program finds is 85 moves. The [Wikipedia](https://en.wikipedia.org/wiki/Klotski) article reports a solution of 81 moves, but they count moving a piece by two squares in the same direction as a single move whereas this program counts it as two. Also the starting configurations differ between the Klotski variant this program solves (Pioneer 1) and the variant described in the Wikipedia article.
+The shortest solution this program finds is 85 moves. The [Wikipedia article](https://en.wikipedia.org/wiki/Klotski) reports a solution of 81 moves, but they count moving a piece by two squares in the same direction as a single move whereas this program counts it as two. Also the starting configurations differ between the Klotski variant this program solves (Pioneer 1) and the variant described in the Wikipedia article.
 
-The program examines 25,955 unique board configurations. This is fewer than the 3.6 million configuration estimate and greater than the 3.6 million / 4! / 4! = 6250 estimate. Seems reasonable enough.
+The program examines 25,955 unique board configurations. The search is exhaustive, so this is the number of configurations reachable from the initial configuration. This made me wonder if there exist any unreachable configurations, so I wrote a backtracking search to count the number of possible configurations (both reachable and unreachable from the start configuration). There were 65880 (39925 unreachable). I wonder how many connected components are in the graph that models all board configurations.
 
 ## Tests
 
