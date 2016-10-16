@@ -34,15 +34,15 @@ This program uses a breadth first search to traverse the graph. It does not expl
 
 The program keeps track of all previously enqueued configurations to ensure that each configuration is examined exactly once. Finally, before being enqueued each configuration is examined to determine whether it is a solved configuration.
 
-## Complexity
-
-The queue is a Python `collections.deque`. Its `append` and `pop` are O(1). The visited configurations are stored in a `set`. The `add` and `in` operations on a `set` have average complexity O(1) and worst case O(N). Breadth first search has complexity O(V+E) where V is the number of board configurations and E is the number of transitions between them. Membership in the set of visited configurations is checked for each transition and the number of elements in the set of visited configurations is bounded by the number of board configurations V. Therefore the program has average complexity O(V+E) and worst case complexity O((V+E) * V).
-
 ## Results
 
 The shortest solution this program finds is 85 moves. The [Wikipedia article](https://en.wikipedia.org/wiki/Klotski) reports a solution of 81 moves, but they count moving a piece by two squares in the same direction as a single move whereas this program counts it as two. Also the starting configurations differ between the Klotski variant this program solves (Pioneer 1) and the variant described in the Wikipedia article.
 
 The program examines 25,955 unique board configurations. The search is exhaustive, so this is the number of configurations reachable from the initial configuration. This made me wonder if there exist any unreachable configurations, so I wrote a backtracking search to count the number of possible configurations (both reachable and unreachable from the start configuration). There were 65880 (39925 unreachable). I wonder how many connected components are in the graph that models all board configurations.
+
+## Complexity
+
+The queue is a Python `collections.deque`. Its `append` and `pop` are O(1). The visited configurations are stored in a `set`. The `add` and `in` operations on a `set` have average complexity O(1) and worst case O(N). Breadth first search has complexity O(V+E) where V is the number of board configurations and E is the number of transitions between them. Membership in the set of visited configurations is checked for each transition and the number of elements in the set of visited configurations is bounded by the number of board configurations V. Therefore the program has average complexity O(V+E) and worst case complexity O((V+E) * V).
 
 ## Tests
 
