@@ -40,6 +40,7 @@ class Piece:
     r, c = _index_to_tuple(square)
     return _tuple_to_index((r + offset[0], c + offset[1]))
 
+
 class Board:
   def __init__(self, pieces, squares):
     self._pieces = pieces
@@ -102,6 +103,60 @@ def initial_board():
 
 def solved(board):
   return board._squares[17] == 0 and board._squares[18] == 0
+
+_piece_heights = [2, 1, 2, 1, 1]
+_piece_widths = [2, 2, 1, 1, 1]
+
+def number_of_states():
+  remaining_pieces = [1, 1, 4, 4, 2]
+  occupied_squares = [False] * (WIDTH * HEIGHT)
+  return _number_of_states(remaining_pieces, occupied_squares, 0, 0)
+
+def _number_of_states(remaining_pieces, occupied_squares, start_row, start_col):
+  if all(map(lambda x: x == 0, remaining_pieces)):
+    assert start_row == HEIGHT
+    assert start_col == 0
+    return 1
+  assert start_row < HEIGHT and start_col < WIDTH
+
+  number_of_states = 0
+  for (i, count) in enumerate(remaining_pieces):
+    if count == 0:
+      continue
+    h = _piece_heights[i]
+    w = _piece_widths[i]
+    if not _block_empty(occupied_squares, start_row, start_col, h, w):
+      continue
+
+    _fill_block(occupied_squares, start_row, start_col, h, w, True)
+    remaining_pieces[i] -= 1
+
+    next_start_row, next_start_col = _next_empty_square(occupied_squares, start_row, start_col)
+    number_of_states += _number_of_states(remaining_pieces, occupied_squares, next_start_row, next_start_col)
+
+    _fill_block(occupied_squares, start_row, start_col, h, w, False)
+    remaining_pieces[i] += 1
+  return number_of_states
+
+def _block_empty(occupied_squares, row, col, height, width):
+  if row + height > HEIGHT or col + width > WIDTH:
+    return False
+  for r in range(row, row + height):
+    for c in range(col, col + width):
+      if occupied_squares[_tuple_to_index((r, c))]:
+        return False
+  return True
+
+def _fill_block(occupied_squares, row, col, height, width, value):
+  for r in range(row, row + height):
+    for c in range(col, col + width):
+      occupied_squares[_tuple_to_index((r, c))] = value
+
+def _next_empty_square(occupied_squares, start_row, start_col):
+  index = _tuple_to_index((start_row, start_col))
+  while index < WIDTH * HEIGHT and occupied_squares[index]:
+    index += 1
+  return _index_to_tuple(index)
 
 def _index_to_tuple(index):
   r = index / WIDTH
