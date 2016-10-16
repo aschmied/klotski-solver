@@ -1,5 +1,5 @@
-width = 4
-height = 5
+WIDTH = 4
+HEIGHT = 5
 
 class Piece:
   def __init__(self, label, occupied_squares):
@@ -21,9 +21,9 @@ class Piece:
       sr = r + offset[0]
       sc = c + offset[1]
 
-      if sr < 0 or sr >= height:
+      if sr < 0 or sr >= HEIGHT:
         return False
-      if sc < 0 or sc >= width:
+      if sc < 0 or sc >= WIDTH:
         return False
 
       if not squares[_tuple_to_index((sr, sc))] in [-1, self.label()]:
@@ -48,7 +48,7 @@ class Board:
   def __str__(self):
     output = ''
     for i, square in enumerate(self._squares):
-      if i > 0 and i % width == 0:
+      if i > 0 and i % WIDTH == 0:
         output += '\n'
       output += str(square) if not square == -1 else ' '
     return output
@@ -104,9 +104,9 @@ def solved(board):
   return board._squares[17] == 0 and board._squares[18] == 0
 
 def _index_to_tuple(index):
-  r = index / width
-  c = index % width
+  r = index / WIDTH
+  c = index % WIDTH
   return (r, c)
 
 def _tuple_to_index(tuple):
-  return width * tuple[0] + tuple[1]
+  return WIDTH * tuple[0] + tuple[1]
