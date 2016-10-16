@@ -7,13 +7,14 @@ A short Python 2.7 program to solve the Klotski (a.k.a. Square Root, Pioneer 1) 
 Running it:
 
 ```
-$ python main.py
-Finished in 3.98684501648 seconds
+$ python main.py 
+Finished in 8.9454369545 seconds
   964 unique solutions
   85 moves in shortest solution
   125 moves in longest solution
   964 unique end states
   25955 board configurations examined
+  65880 board configurations total (39925 unreachable)
 ```
 
 ## Motivation
