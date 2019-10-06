@@ -1,6 +1,6 @@
 import collections
 
-import board
+from . import board
 
 class Solver:
   def __init__(self):

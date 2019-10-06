@@ -159,7 +159,7 @@ def _next_empty_square(occupied_squares, start_row, start_col):
   return _index_to_tuple(index)
 
 def _index_to_tuple(index):
-  r = index / WIDTH
+  r = index // WIDTH
   c = index % WIDTH
   return (r, c)
 
