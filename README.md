@@ -1,6 +1,6 @@
 ## Klotski Solver
 
-A short Python 2.7 program to solve the Klotski (a.k.a. Square Root, Pioneer 1) puzzle game.
+A short Python 3.7 program to solve the Klotski (a.k.a. Square Root, Pioneer 1) puzzle game.
 
 ## Code Example
 
